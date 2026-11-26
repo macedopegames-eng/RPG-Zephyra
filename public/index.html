@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexus Archives</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=IM+Fell+English:ital@0;1&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--w1:#3d2717;--w2:#120a06;--brass:#c79a45;--br2:#7a5822;--cop:#b5532c;--pat:#6cc0ae;--parch:#efe3c6;--ink:#2a1a0e;--dk:#17100b;--lt:#efe3c6;--card:rgba(34,22,14,.9);--rv:#e6c274 0 .45vmin,#6b4a1c .55vmin,transparent .7vmin;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--w1:#32200f;--w2:#0c0704}}
+:root[data-theme="dark"]{--w1:#32200f;--w2:#0c0704}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--w2);color:var(--lt);font:16px/1.4 "IM Fell English",Georgia,serif;overflow:hidden}
+h2,h3,.tab,.b,.name,.big,#hud,.lvl{font-family:"Cinzel",Georgia,serif}
+#tv{position:relative;height:100%;padding:3.4vmin 3.4vmin 6.4vmin;background:radial-gradient(circle at 1.7vmin 1.7vmin,var(--rv)),radial-gradient(circle at calc(100% - 1.7vmin) 1.7vmin,var(--rv)),radial-gradient(circle at 1.7vmin calc(100% - 1.7vmin),var(--rv)),radial-gradient(circle at calc(100% - 1.7vmin) calc(100% - 1.7vmin),var(--rv)),linear-gradient(145deg,var(--w1),var(--w2) 80%);box-shadow:inset 0 0 0 2px #000,inset 0 0 0 .5vmin #5a3f1c,inset 0 0 40px #000}
+#tv::after{content:"ÉTER-VISION · MOD. 1887";position:absolute;bottom:1.8vmin;left:50%;transform:translateX(-50%);font:600 max(9px,1.3vmin) "Cinzel",serif;letter-spacing:.3em;color:var(--brass);white-space:nowrap}
+#tv::before{content:"";position:absolute;right:5vmin;bottom:2vmin;width:1.1vmin;height:1.1vmin;min-width:7px;min-height:7px;border-radius:50%;background:#ffb347;box-shadow:0 0 10px #ffb347;animation:pulse 3s ease-in-out infinite}
+#screen{position:relative;height:100%;border-radius:2.2vmin;overflow:hidden;background:#0a0603;box-shadow:0 0 0 .5vmin #000,0 0 0 1vmin var(--brass),0 0 0 1.3vmin #3a2812,inset 0 0 6vmin rgba(0,0,0,.8)}
+#app{position:absolute;inset:0 0 26px 0;overflow:hidden}
+#hud{position:absolute;left:0;right:0;bottom:0;height:26px;display:flex;gap:18px;align-items:center;padding:0 18px;font-size:11px;letter-spacing:.08em;background:#120b06;border-top:1px solid var(--br2);color:#b9a37a;z-index:4}
+#hud .ok{color:var(--pat)}#hud span:last-child{margin-left:auto}
+.fx{position:absolute;inset:0;pointer-events:none;z-index:50}
+.scan{background:repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0 1px,transparent 1px 3px)}
+.dots{background:radial-gradient(rgba(0,0,0,.4) 1px,transparent 1.5px) 0 0/4px 4px;opacity:.1}
+.glare{background:linear-gradient(118deg,rgba(255,240,200,.08),transparent 30%),radial-gradient(ellipse at 50% 50%,transparent 62%,rgba(0,0,0,.45))}
+button,input,textarea{font:inherit}
+input,textarea{width:100%;background:#0f0905;color:var(--lt);border:1px solid #5a3f1c;padding:8px;border-radius:3px}
+input:focus,textarea:focus,button:focus-visible{outline:2px solid var(--brass);outline-offset:1px}
+label{display:block;font-size:14px;color:#c4ae82;margin-bottom:8px}label input,label textarea{margin-top:3px}
+.b{background:linear-gradient(#d9ad58,#a97a2e);color:#24160b;border:1px solid #5a3f1c;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 2px 0 #5a3f1c;padding:9px 16px;font-size:13px;font-weight:600;letter-spacing:.05em;cursor:pointer;border-radius:3px;transition:transform .15s}
+.b:hover{transform:translateY(-1px)}.b:active{transform:translateY(1px);box-shadow:none}
+.b.alt{background:transparent;color:var(--brass);box-shadow:none;border-color:var(--brass)}
+.b.sm{padding:4px 10px;font-size:11px}
+.login{height:100%;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#4a2f1b,#120a06 70%)}
+.lbox{width:min(380px,88%);padding:30px;background:rgba(22,14,9,.92);border:1px solid var(--brass);outline:1px solid var(--br2);outline-offset:5px;box-shadow:0 10px 40px #000;animation:rise .8s both}
+.lbox h2{margin:0 0 4px;font-size:26px;color:var(--brass);letter-spacing:.06em}
+.lbox p{margin:0 0 18px;color:#b9a37a;font-size:14px}.err{color:#f08a5d;min-height:20px;font-size:14px}
+.sh{position:absolute;inset:0;background:radial-gradient(circle at 75% 20%,#2a1b11,var(--dk) 70%)}
+.bg{position:absolute;inset:0;overflow:hidden}
+.bg::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(120,80,30,.05) 0 2px,transparent 2px 5px),linear-gradient(160deg,#f1e6cb,#dcc597);clip-path:polygon(0 0,60% 0,42% 100%,0 100%);transition:opacity .4s}
+.bg::after{content:"";position:absolute;inset:0;background:var(--brass);clip-path:polygon(60% 0,60.4% 0,42.4% 100%,42% 100%)}
+.dim .bg::before{opacity:.07}.dim .bg::after{opacity:.4}
+.gear{position:absolute;color:var(--brass);opacity:.22;pointer-events:none;animation:spin var(--d,40s) linear infinite}.gear.rev{animation-direction:reverse}
+nav{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:12px 22px}
+.tab{background:none;border:0;border-bottom:2px solid transparent;color:var(--lt);padding:6px 10px;margin-right:6px;font-size:13px;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:border-color .25s,color .25s}
+.tab:hover{border-color:var(--br2)}.tab.on{border-color:var(--cop)}
+.home nav>div .tab{color:var(--ink)}
+.hero{position:absolute;left:50%;bottom:0;height:90%;max-width:36%;transform:translateX(-50%);object-fit:contain;filter:drop-shadow(0 0 20px rgba(0,0,0,.5));z-index:2;animation:hero 1s cubic-bezier(.2,.8,.2,1) both,bob 7s 1s ease-in-out infinite}
+.L{position:absolute;left:4%;top:18%;width:34%;color:var(--ink);z-index:3}
+.R{position:absolute;right:4%;top:15%;width:31%;color:var(--lt);z-index:3}
+.L>*,.R>*{animation:rise .7s both}:is(.L,.R)>:nth-child(2){animation-delay:.12s}:is(.L,.R)>:nth-child(n+3){animation-delay:.24s}
+.lvl{font-size:14px;letter-spacing:.2em;color:var(--cop);font-weight:600}
+.name{font-weight:800;font-size:clamp(30px,5.4vw,78px);line-height:1.04;margin:10px 0 22px;word-break:break-word}
+.q{font:italic clamp(19px,2.3vw,32px)/1.25 "IM Fell English",Georgia,serif;margin:0 0 16px;color:#fff3d6}
+.bio{font-size:16px;line-height:1.5;color:#d9ccaa}
+.info{margin-top:18px;padding-top:10px;border-top:1px solid var(--brass);font-size:15px;color:var(--brass)}
+.L .b{margin:0 8px 8px 0;background:var(--ink);color:var(--parch);border-color:var(--ink);box-shadow:none}
+.gal{position:absolute;left:4%;bottom:5%;width:34%;display:flex;flex-wrap:wrap;gap:10px;z-index:4;animation:rise .8s .4s both}
+.tile{position:relative;width:62px;height:62px;padding:3px;border:2px solid var(--brass);background:#2a1a0e;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.4);transition:transform .25s}
+.tile:hover{transform:translateY(-4px) rotate(-2deg)}.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile.add{display:grid;place-items:center;font-size:28px;color:var(--brass);background:rgba(42,26,14,.15);border-style:dashed}
+.x{position:absolute;top:-8px;right:-8px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:var(--cop);color:#fff;font-size:12px;line-height:1;cursor:pointer}
+.lb{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:rgba(12,7,4,.9);cursor:zoom-out;animation:fade .25s}
+.lb img{max-width:88%;max-height:86%;border:3px solid var(--brass);box-shadow:0 0 40px #000}
+.page{position:absolute;top:56px;bottom:0;left:0;right:0;overflow:auto;padding:14px 6% 24px;animation:rise .5s both}
+.page h3{margin:0 0 14px;font-size:28px;color:var(--brass);letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--br2);border-left:4px solid var(--brass);padding:14px;margin-bottom:12px;border-radius:3px;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-2px);border-color:var(--brass)}.grid .card{margin:0}
+.big{font-weight:800;font-size:44px;line-height:1.1}
+.mod{color:var(--pat);font-size:20px;float:right}
+.bar{height:6px;background:#3a2a1a;margin-top:10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brass),var(--cop));transform-origin:left;animation:grow 1s .2s cubic-bezier(.2,.8,.2,1) both}
+.tag{display:inline-block;font-size:13px;color:var(--brass);border:1px solid var(--br2);padding:0 8px;margin-left:8px}
+.card h4{margin:0 0 6px;font-size:19px}.card p{margin:0;color:#d9ccaa;line-height:1.5}
+.master{position:absolute;inset:0;display:grid;grid-template-columns:290px 1fr;grid-template-rows:auto 1fr;gap:14px;padding:16px 22px;background:radial-gradient(circle at 85% 0,#3d2717,#120a06 70%)}
+.mh{grid-column:1/3;display:flex;justify-content:space-between;align-items:center}
+.mh h2{margin:0;font-size:24px;color:var(--brass);letter-spacing:.06em}
+.mcol{overflow:auto;min-height:0;padding-right:6px;animation:rise .5s both}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.g6{display:grid;grid-template-columns:repeat(3,1fr);gap:0 10px}
+.sub{display:grid;grid-template-columns:1.2fr 1fr 2fr auto;gap:6px;margin-bottom:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+@keyframes fade{from{opacity:0}}
+@keyframes grow{from{transform:scaleX(0)}}
+@keyframes hero{from{opacity:0;transform:translateX(-50%) translateY(40px)}}
+@keyframes bob{50%{transform:translateX(-50%) translateY(-6px)}}
+@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:760px){
+#tv{padding:2vmin 2vmin 5vmin}
+.L{width:46%}.R{top:auto;bottom:6%;width:44%}.hero{max-width:60%;opacity:.9}.bio{display:none}.gal{width:46%;bottom:2%}
+.master{grid-template-columns:1fr;overflow:auto}.mh{grid-column:1}.mcol{overflow:visible}
+.g2,.sub{grid-template-columns:1fr}#hud span:nth-child(3){display:none}}
+
+@property --v{syntax:'<number>';inherits:true;initial-value:0}
+#screen{--shk:0;transition:--v 1.2s ease}
+.vig{z-index:49;background:radial-gradient(ellipse at 50% 50%,transparent calc(72% - var(--v)*58%),rgba(0,0,0,var(--v)) calc(100% - var(--v)*28%))}
+.hp-low #app,.hp-low #hud{animation:shake calc(.7s - var(--shk)*.5s) linear infinite}
+.hp-low .glare{box-shadow:inset 0 0 calc(var(--shk)*90px) rgba(190,30,20,calc(var(--shk)*.7))}
+@keyframes shake{0%,100%{transform:none}15%{transform:translate(calc(var(--shk)*-5px),calc(var(--shk)*3px))}30%{transform:translate(calc(var(--shk)*6px),calc(var(--shk)*-4px))}45%{transform:translate(calc(var(--shk)*-4px),calc(var(--shk)*-5px))}60%{transform:translate(calc(var(--shk)*5px),calc(var(--shk)*4px))}75%{transform:translate(calc(var(--shk)*-6px),calc(var(--shk)*2px))}90%{transform:translate(calc(var(--shk)*3px),calc(var(--shk)*-3px))}}
+.glitch{animation:glf 2.6s steps(1,end) infinite}
+@keyframes glf{0%,84%,100%{filter:drop-shadow(1.5px 0 0 rgba(255,0,70,.6)) drop-shadow(-1.5px 0 0 rgba(0,230,255,.6));transform:none}
+86%{filter:drop-shadow(7px 0 0 #f03) drop-shadow(-7px 0 0 #0ef) hue-rotate(50deg);transform:translate(-8px,0) skewX(-5deg)}
+88%{filter:drop-shadow(-5px 2px 0 #f03) drop-shadow(5px -2px 0 #0ef) saturate(2.5);transform:translate(9px,-3px) skewX(4deg)}
+90%{filter:drop-shadow(3px 0 0 #f03) drop-shadow(-3px 0 0 #0ef) invert(.15);transform:translate(0,4px) scaleY(1.03)}
+92%{filter:drop-shadow(1.5px 0 0 rgba(255,0,70,.6)) drop-shadow(-1.5px 0 0 rgba(0,230,255,.6));transform:translate(-3px,0)}}
+.gl{display:none}.glitch .gl{display:block}
+.gl::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:screen;opacity:0;animation:burst 4.3s steps(1) infinite}
+@keyframes burst{0%,90%,100%{opacity:0}91%{opacity:.8;background-position:40px 20px}92%{opacity:.2}93%{opacity:.9;background-position:-30px 60px}94%{opacity:.4}95%{opacity:0}}
+.gl::after{content:"";position:absolute;left:0;right:0;height:16%;background:linear-gradient(transparent,rgba(255,255,255,.13),transparent);animation:roll 3.1s linear infinite}
+@keyframes roll{from{top:-18%}to{top:105%}}
+.glitch .scan{background:repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0 1px,transparent 1px 3px);animation:scj .35s steps(1) infinite}
+@keyframes scj{0%{background-position:0 0;opacity:1}25%{background-position:0 2px;opacity:.45}50%{background-position:0 -1px;opacity:1}75%{background-position:0 1px;opacity:.6}}
+.glitch #hud .ok{color:#ff5a3c;animation:blink .5s steps(1) infinite}@keyframes blink{50%{opacity:.3}}
+.nr .L>*,.nr .R>*,.nr .gal,.nr .page,.nr .mcol,.nr .bar i{animation:none}
+.vit{display:flex;gap:6px;align-items:center;margin-top:10px;font-size:14px}.vit b{width:26px}
+.vb{flex:1;height:10px;border:1px solid currentColor;background:rgba(42,26,14,.2)}.vb i{display:block;height:100%}
+.vm{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:14px}
+
+select{width:100%;background:#0f0905;color:var(--lt);border:1px solid #5a3f1c;padding:8px;border-radius:3px;font:inherit}select:focus{outline:2px solid var(--brass);outline-offset:1px}
+.chat{display:flex;flex-direction:column;overflow:hidden}.page.chat{overflow:hidden;padding-bottom:16px}
+#cl{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px 6px 2px 0}
+.msg{max-width:min(78%,640px);align-self:flex-start;background:var(--card);border:1px solid var(--br2);border-left:4px solid var(--brass);border-radius:3px;padding:8px 12px}
+.msg.mine{align-self:flex-end;border-left-width:1px;border-right:4px solid var(--pat)}
+.msg.gm{background:rgba(58,30,16,.95);border-left-color:var(--cop)}
+.mhd{display:flex;gap:12px;align-items:baseline;justify-content:space-between;color:var(--brass)}
+.mhd b{font-family:"Cinzel",Georgia,serif;font-size:13px;letter-spacing:.04em}.mhd .tag{font-size:10px;margin-left:6px;color:var(--cop);border-color:var(--cop)}.mhd time{font-size:12px;color:#9c8864;white-space:nowrap}
+.msg p{margin:3px 0 0;color:var(--lt);white-space:pre-wrap;overflow-wrap:anywhere}
+.crow{display:flex;gap:8px;margin-top:10px}.crow input{flex:1}
+.bd{display:inline-block;min-width:16px;margin-left:6px;padding:0 5px;border-radius:9px;background:var(--cop);color:#fff;font:700 11px/16px "Cinzel",serif;text-align:center;letter-spacing:0}
+.dc{cursor:pointer}.dc.lk{cursor:default;opacity:.65}.dc.oficial,.dcm.oficial{border-left-color:var(--cop)}.dc.relato,.dcm.relato{border-left-color:var(--pat)}.lkn{font-style:italic;margin-top:4px!important}
+.paper{position:relative;max-width:760px;margin:0 auto 10px;padding:26px 30px;color:var(--ink);background:repeating-linear-gradient(90deg,rgba(120,80,30,.04) 0 2px,transparent 2px 5px),linear-gradient(160deg,#f1e6cb,#dcc597);box-shadow:0 8px 30px #000}
+.paper h2{font-family:"Cinzel",Georgia,serif;margin:6px 0 10px;font-size:clamp(22px,3vw,34px);line-height:1.1;padding-right:90px;overflow-wrap:anywhere}
+.paper .dk{font:600 12px "Cinzel",serif;letter-spacing:.18em;color:var(--cop);text-transform:uppercase}
+.paper .dmeta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px;color:#5a4128;border-top:1px solid #8a6a38;border-bottom:1px solid #8a6a38;padding:6px 0;margin-bottom:14px}
+.dbody{white-space:pre-wrap;overflow-wrap:anywhere;font-size:17px;line-height:1.6}
+.paper.oficial{border-top:8px solid #3d2717}.paper.oficial .dbody{font-family:"Special Elite","Courier New",monospace;font-size:15px}
+.paper.relato{transform:rotate(-.5deg);background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(90,60,25,.18) 27px 28px),linear-gradient(160deg,#ead9ab,#d2b87a)}
+.paper.relato h2{font-style:italic;font-weight:400;font-family:"IM Fell English",Georgia,serif;padding-right:0}
+.paper.relato .dbody{font-style:italic;font-size:19px;line-height:28px}
+.stamp{position:absolute;top:18px;right:22px;border:3px double var(--cop);color:var(--cop);padding:2px 10px;font:800 14px "Cinzel",serif;letter-spacing:.2em;transform:rotate(7deg);opacity:.8}.paper.relato .stamp{display:none}
+.dimg{display:block;max-width:100%;max-height:48vh;margin:0 auto 16px;border:6px solid #fff8e6;box-shadow:0 3px 10px rgba(0,0,0,.45);cursor:zoom-in}.paper.relato .dimg{transform:rotate(1.2deg)}
+@media (max-width:760px){
+nav{padding:8px 10px;gap:6px}nav>div{display:flex;overflow-x:auto;flex:1;min-width:0}.tab{white-space:nowrap;padding:6px 6px;margin-right:2px;font-size:12px}
+.mcol.chat{height:70vh}.msg{max-width:92%}.paper{padding:20px 16px}.paper h2{padding-right:0}.stamp{position:static;display:inline-block;margin-bottom:6px}
+}
+.imp{font-size:12px;line-height:1.35;color:var(--brass);margin-top:8px;opacity:.9}</style>
+</head>
+<body>
+<div id="tv"><div id="screen">
+<div id="app"></div>
+<div id="hud"><span>ÉTER-OS v2.6.1</span><span class="ok" id="st">● VAPOR ESTÁVEL</span><span id="clk"></span><span>▣ ♪ ⚙</span></div>
+<div class="fx scan"></div><div class="fx gl"></div><div class="fx vig"></div><div class="fx dots"></div><div class="fx glare"></div>
+</div></div>
+<script>
+const K='rpgcrt_db',AT=['for','des','con','int','sab','car'],AN={for:'Força',des:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'};
+const PH='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#d9ad58"/><stop offset="1" stop-color="#b5532c"/></linearGradient></defs><g fill="#2a1a0e" stroke="url(#g)" stroke-width="4"><circle cx="100" cy="70" r="40"/><path d="M40 400V190q0-50 60-50t60 50v210z"/></g></svg>');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const api=async(m,u,b)=>{const r=await fetch('/api'+u,{method:m,headers:{'content-type':'application/json'},body:b?JSON.stringify(b):undefined,credentials:'same-origin'});const j=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(j.erro||'Falha de rede. Tente de novo.');e.st=r.status;throw e}return j};
+let db={players:[]},me=null,tab='home',prev=null,draft=null,isNew=false,msg='',pend={},mtab='list',ev={},last='',busy=false,chat=[],chatId=0,seen=0,cinit=false,docs=[],docSig='',dsl=null,viewDoc=null,dd=null,dnew=false,sending=false,cq=Promise.resolve();
+const sg=p=>(p.img||'').length+'.'+(p.gallery||[]).reduce((a,g)=>a+g.length,0);
+const core=st=>{const{chat:_c,docs:_d,...c}=st;return JSON.stringify(c)};
+const loadChat=()=>cq=cq.catch(()=>{}).then(async()=>{const r=await api('GET','/chat?after='+chatId);if(r.length){chat=chat.concat(r).slice(-300);chatId=r[r.length-1].id}if(!cinit){cinit=true;seen=chatId}});
+const loadDocs=async()=>{docs=await api('GET','/docs');dsl=docSig;if(viewDoc&&!docs.some(d=>d.id==viewDoc&&(me.role=='master'||d.st=='open')))viewDoc=null};
+const rst=()=>{chat=[];chatId=0;seen=0;cinit=false;docs=[];docSig='';dsl=null;viewDoc=null;dd=null;dnew=false};
+const sync=async()=>{const[pl,st]=await Promise.all([api('GET','/players'),api('GET','/state')]);pl.forEach(p=>p.sig=sg(p));db.players=pl;ev=st.events;last=core(st);docSig=st.docs;await Promise.all([loadChat(),docSig!==dsl?loadDocs():0])};
+const run=async f=>{app.classList.remove('nr');try{await f()}catch(e){if(e.st==401)me=null;msg=e.message;if(me&&!draft&&!dd)alert(e.message)}render()};
+const app=document.getElementById('app'),find=id=>db.players.find(p=>p.id==id);
+// Regra de 3 (igual à do servidor): PV/PE máx. novo = máx. atual × atributo novo ÷ atributo antigo, arredondado ao inteiro mais próximo.
+// Para arredondar sempre para cima/baixo, trocar Math.round por Math.ceil/Math.floor (e o mesmo no worker.js).
+const R3=Math.round,r3=(max,a,b)=>a>0&&b>a?Math.max(0,Math.min(9999,R3(max*b/a))-max):0;
+const IMP={con:['PV','hpMax'],des:['PE','peMax']};
+const impL=(k,p,v,left)=>{const m=IMP[k];if(!m)return'';const[L,mx]=m,cur=+p[mx]||0,base=+p.attrs[k]||0,n=`<div class="imp">Influencia o ${L}: regra de 3, arredondada.</div>`;
+if(v>base){const g=r3(cur,base,v);return n+`<div class="imp">Ao confirmar: ${L} máx. ${cur} → ${cur+g} (+${g}) · ${L} atual +${g}</div>`}
+if(left>0){const g=r3(cur,base,base+1);return n+`<div class="imp">Com +1 ponto: ${L} máx. ${cur} → ${cur+g} (+${g})</div>`}
+return n};
+const mod=v=>{const m=Math.floor((v-10)/2);return (m>=0?'+':'')+m};
+const cur=()=>find(prev||(me&&me.id));
+const vit=p=>[['hp','PV','hpMax','#c0462b'],['pe','PE','peMax','#2f8f7d']].map(([k,l,m,c])=>{const v=+p[k]||0,M=+p[m]||0;return `<div class="vit"><b>${l}</b><div class="vb"><i style="width:${M?Math.min(100,v/M*100):0}%;background:${c}"></i></div><span>${v}/${M}</span><button class="b sm" data-act="vit" data-v="${k}:-1">−</button><button class="b sm" data-act="vit" data-v="${k}:1">+</button></div>`}).join('');
+const vitm=p=>`<div class="vm">${[['hp','PV'],['pe','PE']].map(([k,l])=>`${l} ${p[k]}/${p[k+'Max']}<button class="b sm alt" data-act="mvit" data-v="${p.id}:${k}:-1">−</button><button class="b sm alt" data-act="mvit" data-v="${p.id}:${k}:1">+</button>`).join(' · ')}</div>`;
+const inChat=()=>!!me&&(me.role=='master'&&!prev?mtab=='chat':tab=='chat');
+const unread=()=>me?chat.filter(m=>m.id>seen&&m.who!=me.id).length:0;
+const tm=ts=>{const d=new Date(ts),t=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});return d.toDateString()==new Date().toDateString()?t:d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit'})+' '+t};
+const msgs=()=>chat.length?chat.map(m=>`<div class="msg${m.who==me.id?' mine':''}${m.role=='master'?' gm':''}"><div class="mhd"><b>${esc(m.name)}${m.role=='master'?'<span class="tag">MESTRE</span>':''}</b><time>${tm(m.ts)}</time></div><p>${esc(m.text)}</p></div>`).join(''):'<div class="msg">Nenhuma mensagem ainda. Seja o primeiro a falar.</div>';
+const chatBody=()=>`<div id="cl">${msgs()}</div><div class="crow"><input id="ci" maxlength="500" placeholder="Escreva uma mensagem…" autocomplete="off"><button class="b" data-act="send">Enviar</button></div>`;
+const chatV=()=>`<div class="page chat"><h3>Chat Global</h3>${chatBody()}</div>`;
+const chatM=()=>`<div class="mcol chat" style="grid-column:1/3"><h3 style="margin:0 0 12px;font-size:28px;color:var(--brass)">Chat Global</h3>${chatBody()}</div>`;
+const patchChat=force=>{const l=document.getElementById('cl');if(!l||!inChat())return false;const nb=force||l.scrollHeight-l.scrollTop-l.clientHeight<60;l.innerHTML=msgs();seen=chatId;if(nb)l.scrollTop=l.scrollHeight;return true};
+async function send(){const i=document.getElementById('ci');if(!i||sending)return;const t=i.value.trim();if(!t)return;sending=true;i.value='';
+try{await api('POST','/chat',{text:t});await loadChat();seen=chatId;if(!patchChat(true))render()}
+catch(e){const j=document.getElementById('ci');if(j)j.value=t;if(e.st==401){me=null;msg=e.message;render()}else alert(e.message)}
+finally{sending=false;const j=document.getElementById('ci');if(j)j.focus()}}
+const DK={oficial:'Documento Oficial',relato:'Relato'},STL={hidden:'OCULTO',locked:'BLOQUEADO',open:'ABERTO'};
+const seenGet=()=>{try{return JSON.parse(localStorage.getItem('nx_seen_'+me.id)||'[]')}catch{return[]}};
+const seenAdd=id=>{try{const s=seenGet();if(!s.includes(id)){s.push(id);localStorage.setItem('nx_seen_'+me.id,JSON.stringify(s.slice(-200)))}}catch{}};
+const newDocs=()=>{if(!me||me.role!='player')return 0;const s=seenGet();return docs.filter(d=>d.st=='open'&&!s.includes(d.id)).length};
+const bdg=k=>{const n=k=='chat'?unread():k=='docs'?newDocs():0;return n?`<span class="bd">${n}</span>`:''};
+const dcard=d=>{const op=d.st=='open',nw=op&&me.role=='player'&&!seenGet().includes(d.id);return `<div class="card dc ${d.kind}${op?'':' lk'}"${op?` data-act="d_open" data-v="${d.id}"`:''}><h4>${op?'':'🔒 '}${esc(d.title)}${nw?'<span class="tag">NOVO</span>':''}</h4><p>${DK[d.kind]}${d.cat?' · '+esc(d.cat):''}</p>${op?'':'<p class="lkn">Acesso restrito pelo Mestre.</p>'}</div>`};
+const docView=(d,pg)=>`<div class="${pg?'page':'dvm'}">${pg?'<button class="b sm alt" data-act="d_back" style="margin-bottom:12px">← Documentos</button>':''}<article class="paper ${d.kind}"><span class="stamp">OFICIAL</span><div class="dk">${DK[d.kind]}${d.cat?' · '+esc(d.cat):''}</div><h2>${esc(d.title)}</h2><div class="dmeta">${d.author?`<span>${d.kind=='oficial'?'Emitido por':'Escrito por'}: ${esc(d.author)}</span>`:''}${d.date?`<span>Data: ${esc(d.date)}</span>`:''}${d.kind=='oficial'?`<span>Ref.: ${esc(d.id.slice(0,6).toUpperCase())}</span>`:''}</div>${d.img?`<img class="dimg" src="${esc(d.img)}" alt="" data-act="d_zoom" data-v="${d.id}">`:''}${d.body?`<div class="dbody">${esc(d.body)}</div>`:''}</article></div>`;
+const docsV=()=>{const l=docs.filter(x=>x.st!='hidden'),v=viewDoc&&l.find(x=>x.id==viewDoc&&x.st=='open');
+return v?docView(v,true):`<div class="page"><h3>Documentos</h3>${l.length?`<div class="grid">${l.map(dcard).join('')}</div>`:'<div class="card">Nenhum documento disponível por enquanto.</div>'}</div>`};
+const blankDoc=()=>({id:'',title:'',kind:'oficial',cat:'',author:'',date:'',body:'',img:'',st:'hidden'});
+const stB=d=>[['hidden','Ocultar'],['locked','Bloquear'],['open','Abrir']].map(([s,l])=>`<button class="b sm${d.st==s?'':' alt'}" data-act="d_st" data-v="${d.id}:${s}">${l}</button>`).join('');
+const dlist=()=>docs.map(d=>`<div class="card dcm ${d.kind}"><h4>${esc(d.title)}<span class="tag">${STL[d.st]}</span></h4><p>${DK[d.kind]}${d.cat?' · '+esc(d.cat):''}</p><div class="row" style="margin-top:8px">${stB(d)}</div><div class="row" style="margin-top:6px"><button class="b sm alt" data-act="d_view" data-v="${d.id}">Ver</button><button class="b sm alt" data-act="d_edit" data-v="${d.id}">Editar</button><button class="b sm" data-act="d_del" data-v="${d.id}">Excluir</button></div></div>`).join('')||'<div class="card">Nenhum documento criado.</div>';
+const dedit=()=>{const d=dd,f=(id,l,v)=>`<label>${l}<input id="${id}" value="${esc(v)}"></label>`,o=(v,l)=>`<option value="${v}"${d.kind==v?' selected':''}>${l}</option>`;
+return `<div class="card"><h4>${dnew?'Novo documento':'Editando: '+esc(d.title)}</h4><div class="err">${esc(msg)}</div>
+<div class="g2"><label>Estilo<select id="d_kind">${o('oficial','Documento Oficial (relatório / dossiê)')}${o('relato','Relato (diário, bilhete, testemunho)')}</select></label>${dnew?`<label>Estado inicial<select id="d_st">${[['hidden','Oculto'],['locked','Bloqueado'],['open','Aberto']].map(([v,l])=>`<option value="${v}"${d.st==v?' selected':''}>${l}</option>`).join('')}</select></label>`:'<div></div>'}</div>
+<div class="g2">${f('d_title','Título',d.title)}<label>Categoria / tipo<input id="d_cat" list="dcats" value="${esc(d.cat)}"></label>${f('d_author',d.kind=='oficial'?'Emitido por / Origem':'Escrito por',d.author)}${f('d_date','Data (no universo do jogo)',d.date)}</div>
+<datalist id="dcats">${['Relatório','Dossiê','Entidade','Ameaça','Registo oficial','Evidência','Foto','Diário','Bilhete','Carta','Testemunho','Gravação'].map(c=>`<option value="${c}">`).join('')}</datalist>
+<label>Conteúdo (texto)<textarea id="d_body" rows="10">${esc(d.body)}</textarea></label>
+<div class="g2">${f('d_img','Imagem (URL)',d.img.startsWith('data:')?'':d.img)}<label>Ou envie um arquivo<input id="d_file" type="file" accept="image/*"></label></div>
+<div class="row" style="margin-bottom:10px"><span style="font-size:12px;color:#9b94c4">${d.img?'Imagem definida':'Sem imagem'}</span>${d.img?'<button class="b sm alt" data-act="d_noimg">Remover imagem</button>':''}</div>
+<div class="row"><button class="b" data-act="d_save">Salvar</button><button class="b alt" data-act="d_cancel">Fechar</button></div></div>`};
+const docsM=()=>{const v=viewDoc&&docs.find(x=>x.id==viewDoc);return `<div class="mcol"><div class="row" style="margin-bottom:10px"><button class="b" data-act="d_new">+ Novo documento</button></div>${dlist()}</div><div class="mcol">${dd?dedit():v?docView(v,false):'<div class="card">Selecione um documento para pré-visualizar ou crie um novo. Ocultar: ninguém vê · Bloquear: jogadores veem o título com cadeado · Abrir: todos podem ler.</div>'}</div>`};
+function dcollect(){const g=i=>document.getElementById(i);if(!dd||!g('d_title'))return;dd.kind=g('d_kind').value;dd.title=g('d_title').value;dd.cat=g('d_cat').value;dd.author=g('d_author').value;dd.date=g('d_date').value;dd.body=g('d_body').value;if(g('d_st'))dd.st=g('d_st').value;const u=g('d_img').value.trim();if(u)dd.img=u}
+function docAct(a,v){
+if(a=='d_open'){viewDoc=v;seenAdd(v)}
+else if(a=='d_back')viewDoc=null;
+else if(a=='d_zoom'){const d=docs.find(x=>x.id==v);if(d)app.firstElementChild.insertAdjacentHTML('beforeend',`<div class="lb" data-act="unzoom"><img src="${esc(d.img)}" alt=""></div>`);return}
+else if(a=='d_view'){dd=null;viewDoc=v;msg=''}
+else if(a=='d_new'){mtab='docs';dd=blankDoc();dnew=true;viewDoc=null;msg=''}
+else if(a=='d_edit'){dd=JSON.parse(JSON.stringify(docs.find(x=>x.id==v)));dnew=false;viewDoc=null;msg=''}
+else if(a=='d_cancel'){dd=null;msg=''}
+else if(a=='d_noimg'){dcollect();dd.img=''}
+else if(a=='d_st'){const[i,s]=v.split(':');return run(async()=>{await api('PATCH','/docs/'+i,{st:s});await loadDocs()})}
+else if(a=='d_del'){if(!confirm('Excluir este documento? Não dá para desfazer.'))return;return run(async()=>{await api('DELETE','/docs/'+v);if(dd&&dd.id==v)dd=null;if(viewDoc==v)viewDoc=null;await loadDocs()})}
+else if(a=='d_save'){dcollect();return run(async()=>{if(!dd.title.trim()){msg='Dê um título ao documento.';return}const nw=dnew;if(nw){dd.id=(await api('POST','/docs',dd)).id;dnew=false}else await api('PUT','/docs/'+dd.id,dd);await loadDocs();msg=nw?'Documento salvo. Use os botões da lista para libertá-lo.':'Documento salvo.'})}
+render()}
+const EVT=[{k:'glitch',n:'Glitch',d:'Interferência de sinal, aberração cromática, tremores e falhas de transmissão nas TVs de todos os jogadores.'}];
+const evV=()=>`<div class="mcol" style="grid-column:1/3">${EVT.map(e=>`<div class="card"><h4>${e.n}<span class="tag">${ev[e.k]?'ATIVO':'DESLIGADO'}</span></h4><p>${e.d}</p><div class="row" style="margin-top:10px"><button class="b${ev[e.k]?'':' alt'}" data-act="ev" data-v="${e.k}">${ev[e.k]?'Desativar':'Ativar'} ${e.n}</button></div></div>`).join('')}</div>`;
+const gear=(c,s,x,y,d)=>`<svg class="gear ${c}" style="width:${s}px;left:${x};top:${y};--d:${d}s" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="12" stroke-dasharray="8.975"/><circle cx="50" cy="50" r="33" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="50" r="8" fill="currentColor"/><path d="M50 20v60M20 50h60M29 29l42 42M71 29L29 71" stroke="currentColor" stroke-width="3"/></svg>`;
+const GEARS=gear('',280,'39%','-9%',60)+gear('rev',130,'2%','74%',34)+gear('rev',170,'80%','66%',48);
+const gal=p=>`<div class="gal">${p.gallery.map((s,i)=>`<div class="tile" data-act="zoom" data-v="${i}"><img src="${esc(s)}" alt=""><button class="x" data-act="gdel" data-v="${i}" title="Remover">×</button></div>`).join('')}<label class="tile add" title="Adicionar imagens">+<input id="g_add" type="file" accept="image/*" multiple hidden></label></div>`;
+
+function loginV(){return `<div class="login"><div class="lbox"><h2>NEXUS ARCHIVES</h2><p>Autenticação necessária · insira suas credenciais</p>
+<label>Usuário<input id="lu" autocomplete="username"></label><label>Senha<input id="lp" type="password" autocomplete="current-password"></label>
+<div class="err">${esc(msg)}</div><button class="b" style="width:100%" data-act="login">ACESSAR</button>
+</div></div>`}
+
+function sheet(p,pv){
+const tabs=[['home','Início'],['attrs','Atributos'],['powers','Poderes'],['inv','Inventário'],['lore','História'],['docs','Documentos'],['chat','Chat']];
+const nav=`<nav><div>${tabs.map(([k,l])=>`<button class="tab${tab==k?' on':''}" data-act="tab" data-v="${k}">${l}${bdg(k)}</button>`).join('')}</div><button class="tab" data-act="${pv?'back':'out'}">${pv?'← Painel do Mestre':'Sair ⏻'}</button></nav>`;
+let c='';
+if(tab=='home')c=`<img class="hero" src="${esc(p.img||PH)}" alt="${esc(p.name)}" onerror="this.src='${PH}'">
+<div class="L"><div class="lvl">${esc(p.level)}</div><div class="name">${esc(p.name)}</div><button class="b" data-act="tab" data-v="attrs">Ver ficha completa</button><button class="b" data-act="tab" data-v="powers">Status</button>${vit(p)}</div>
+<div class="R"><p class="q">${esc(p.quote)}</p><div class="bio">${esc(p.bio)}</div><div class="info">Classe / Origem: ${esc(p.cls)}</div></div>${gal(p)}`;
+else if(tab=='attrs'){const used=AT.reduce((t,k)=>t+(pend[k]||0),0),left=(+p.points||0)-used;
+c=`<div class="page"><h3>Atributos</h3><div class="card"><h4>Pontos para distribuir: ${left}${used?`<span class="tag">${used} pendentes</span>`:''}</h4>${used?`<div class="row" style="margin-top:8px"><button class="b sm" data-act="spend">Confirmar distribuição</button><button class="b sm alt" data-act="unspend">Desfazer</button></div>`:''}</div><div class="card"><h4>Regra de 3: Constituição → PV · Destreza → PE</h4><p>Ao confirmar a distribuição, o máximo sobe na mesma proporção do atributo: <b>novo máx. = máx. atual × atributo novo ÷ atributo antigo</b>, arredondado ao inteiro mais próximo (0,5 sobe). O valor atual sobe o mesmo tanto, sem passar do máximo. Ex.: PV máx. 20 e CON 10 → 12: 20 × 12 ÷ 10 = 24, ou seja +4. O Mestre pode ajustar PV e PE à mão a qualquer momento.</p></div><div class="grid">${AT.map(k=>{const v=(+p.attrs[k]||0)+(pend[k]||0);return `<div class="card"><span class="mod">${mod(v)}</span>${AN[k]}<div class="big">${v}</div><div class="bar"><i style="width:${Math.min(100,v/20*100)}%"></i></div>${impL(k,p,v,left)}${left>0?`<button class="b sm alt" style="margin-top:10px" data-act="plus" data-v="${k}">+1</button>`:''}</div>`}).join('')}</div></div>`}
+else if(tab=='powers')c=`<div class="page"><h3>Poderes e habilidades</h3>${p.powers.length?p.powers.map(w=>`<div class="card"><h4>${esc(w.n)}<span class="tag">${esc(w.c)}</span></h4><p>${esc(w.d)}</p></div>`).join(''):'<div class="card">Nenhum poder cadastrado ainda.</div>'}</div>`;
+else if(tab=='inv')c=`<div class="page"><h3>Inventário</h3><div class="card"><h4>Créditos: ₵ ${(+p.credits||0).toLocaleString('pt-BR')}</h4></div>${p.items.length?p.items.map(i=>`<div class="card"><h4>${esc(i.n)}<span class="tag">× ${esc(i.q)}</span></h4><p>${esc(i.d)}</p></div>`).join(''):'<div class="card">Mochila vazia.</div>'}</div>`;
+else if(tab=='docs')c=docsV();
+else if(tab=='chat')c=chatV();
+else c=`<div class="page"><h3>História</h3><div class="card" style="white-space:pre-wrap;line-height:1.6">${esc(p.lore||'Nenhuma história escrita ainda.')}</div></div>`;
+return `<div class="sh ${tab=='home'?'home':'dim'}"><div class="bg">${GEARS}</div>${nav}${c}</div>`}
+
+function masterV(){
+const list=db.players.map(p=>`<div class="card"><h4>${esc(p.name)}</h4><p>@${esc(p.user)}</p>${vitm(p)}<div class="row" style="margin-top:8px"><button class="b sm alt" data-act="view" data-v="${p.id}">Ver</button><button class="b sm alt" data-act="edit" data-v="${p.id}">Editar</button><button class="b sm" data-act="del" data-v="${p.id}">Excluir</button></div></div>`).join('')||'<div class="card">Nenhum jogador cadastrado.</div>';
+return `<div class="master"><div class="mh"><h2>PAINEL DO MESTRE</h2><div class="row"><button class="b alt" data-act="mt" data-v="list">Fichas</button><button class="b alt" data-act="mt" data-v="events">Eventos</button><button class="b alt" data-act="mt" data-v="docs">Documentos</button><button class="b alt" data-act="mt" data-v="chat">Chat${bdg('chat')}</button><button class="b" data-act="new">+ Novo jogador</button><button class="b alt" data-act="out">Sair ⏻</button></div></div>
+${mtab=='events'?evV():mtab=='docs'?docsM():mtab=='chat'?chatM():`<div class="mcol">${list}</div><div class="mcol">${draft?editor():'<div class="card">Selecione um jogador para editar ou crie um novo.</div>'}</div>`}</div>`}
+
+function editor(){const d=draft,f=(id,l,v,t)=>`<label>${l}<input id="${id}" ${t?'type="'+t+'"':''} value="${esc(v)}"></label>`;
+return `<div class="card"><h4>${isNew?'Novo jogador':'Editando: '+esc(d.name)}</h4><div class="err">${esc(msg)}</div>
+<div class="g2">${f('f_user','Usuário',d.user)}${f('f_pass',isNew?'Senha':'Senha (em branco mantém a atual)',d.pass)}${f('f_name','Nome do personagem',d.name)}${f('f_level','Nível / Ano',d.level)}${f('f_cls','Classe / Origem',d.cls)}${f('f_credits','Créditos',d.credits,'number')}${f('f_points','Pontos para distribuir',d.points,'number')}${f('f_hp','PV atual',d.hp,'number')}${f('f_hpm','PV máximo',d.hpMax,'number')}${f('f_pe','PE atual',d.pe,'number')}${f('f_pem','PE máximo',d.peMax,'number')}</div><p class="imp">PV/PE são livres aqui: o Mestre edita à vontade e nada é recalculado. A regra de 3 só atua quando o jogador confirma pontos em Constituição (PV) ou Destreza (PE).</p>
+${f('f_quote','Frase de efeito',d.quote)}
+<div class="g2">${f('f_img','URL da imagem',d.img.startsWith('data:')?'':d.img)}<label>Ou envie um arquivo<input id="f_file" type="file" accept="image/*"></label></div>
+<div class="row" style="margin-bottom:10px"><span style="font-size:12px;color:#9b94c4">${d.img?'Imagem definida':'Sem imagem'}</span>${d.img?'<button class="b sm alt" data-act="noimg">Remover imagem</button>':''}</div>
+<label>Galeria do índice (várias imagens)<input id="f_gal" type="file" accept="image/*" multiple></label><div class="row" style="margin-bottom:12px">${d.gallery.map((s,i)=>`<div class="tile"><img src="${esc(s)}" alt=""><button class="x" data-act="egdel" data-v="${i}">×</button></div>`).join('')}</div><div class="g6">${AT.map(k=>f('a_'+k,AN[k],d.attrs[k],'number')).join('')}</div>
+<label>Resumo da biografia<textarea id="f_bio" rows="3">${esc(d.bio)}</textarea></label>
+<h4>Poderes</h4>${d.powers.map((w,i)=>`<div class="sub"><input data-l="powers" data-i="${i}" data-f="n" placeholder="Nome" value="${esc(w.n)}"><input data-l="powers" data-i="${i}" data-f="c" placeholder="Custo / tipo" value="${esc(w.c)}"><input data-l="powers" data-i="${i}" data-f="d" placeholder="Descrição" value="${esc(w.d)}"><button class="b sm" data-act="rm" data-l="powers" data-v="${i}">✕</button></div>`).join('')}<button class="b sm alt" data-act="add" data-l="powers">+ Poder</button>
+<h4>Inventário</h4>${d.items.map((w,i)=>`<div class="sub"><input data-l="items" data-i="${i}" data-f="n" placeholder="Item" value="${esc(w.n)}"><input data-l="items" data-i="${i}" data-f="q" placeholder="Qtd." value="${esc(w.q)}"><input data-l="items" data-i="${i}" data-f="d" placeholder="Descrição" value="${esc(w.d)}"><button class="b sm" data-act="rm" data-l="items" data-v="${i}">✕</button></div>`).join('')}<button class="b sm alt" data-act="add" data-l="items">+ Item</button>
+<label style="margin-top:12px">História completa<textarea id="f_lore" rows="6">${esc(d.lore)}</textarea></label>
+<div class="row"><button class="b" data-act="save">Salvar ficha</button><button class="b alt" data-act="prevdraft">Pré-visualizar</button><button class="b alt" data-act="cancel">Fechar</button></div></div>`}
+
+function collect(){const g=i=>document.getElementById(i);if(!draft||!g('f_user'))return;
+draft.user=g('f_user').value.trim();draft.pass=g('f_pass').value;draft.name=g('f_name').value;draft.level=g('f_level').value;draft.cls=g('f_cls').value;draft.credits=+g('f_credits').value||0;draft.points=+g('f_points').value||0;draft.hp=+g('f_hp').value||0;draft.hpMax=+g('f_hpm').value||0;draft.pe=+g('f_pe').value||0;draft.peMax=+g('f_pem').value||0;draft.quote=g('f_quote').value;draft.bio=g('f_bio').value;draft.lore=g('f_lore').value;
+const u=g('f_img').value.trim();if(u)draft.img=u;AT.forEach(k=>draft.attrs[k]=+g('a_'+k).value||0);
+document.querySelectorAll('[data-l]').forEach(e=>{if(e.dataset.f)draft[e.dataset.l][+e.dataset.i][e.dataset.f]=e.value})}
+
+function render(){let p;
+if(me&&me.role=='player'){p=find(me.id);if(!p)me=null}
+const ci=document.getElementById('ci'),cl=document.getElementById('cl'),cs=ci&&{v:ci.value,f:document.activeElement==ci,s:ci.selectionStart},nb=cl?cl.scrollHeight-cl.scrollTop-cl.clientHeight<60:true,so=cl?cl.scrollTop:0;
+if(inChat())seen=chatId;
+app.innerHTML=!me?loginV():me.role=='master'?(prev&&find(prev)?sheet(find(prev),true):masterV()):sheet(p,false);fx();
+const n=document.getElementById('cl');if(n){n.scrollTop=nb?n.scrollHeight:so;const i=document.getElementById('ci');if(i&&cs){i.value=cs.v;if(cs.f){i.focus();i.setSelectionRange(cs.s,cs.s)}}}}
+
+const login=()=>run(async()=>{me=await api('POST','/login',{user:document.getElementById('lu').value,pass:document.getElementById('lp').value});msg='';tab='home';rst();await sync()});
+
+function blank(){return {id:'p'+Date.now(),user:'',pass:'',name:'',level:'Nível 1',cls:'',quote:'',img:'',bio:'',lore:'',credits:0,points:10,hp:10,hpMax:10,pe:10,peMax:10,gallery:[],attrs:{for:10,des:10,con:10,int:10,sab:10,car:10},powers:[],items:[]}}
+
+app.onkeydown=e=>{if(e.key=='Enter'&&!me)login();else if(e.key=='Enter'&&e.target.id=='ci'&&!e.isComposing){e.preventDefault();send()}};
+app.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,v=b.dataset.v;app.classList.remove('nr');
+if(a=='login')return login();
+if(a=='send')return send();
+if(a=='tab'){tab=v;pend={}}
+else if(a=='out'){api('POST','/logout').catch(()=>{});me=null;prev=null;draft=null;tab='home';msg='';db.players=[];pend={};mtab='list';ev={};last='';rst()}
+else if(a=='back'){prev=null;tab='home'}
+else if(a=='view'){prev=v;tab='home';pend={}}
+else if(a=='plus'){pend[v]=(pend[v]||0)+1}
+else if(a=='unspend'){pend={}}
+else if(a=='mt'){mtab=v}
+else if(a.startsWith('d_'))return docAct(a,v);
+else if(a=='ev'){const on=!ev[v];return run(async()=>{await api('PUT','/events/'+v,{on});ev[v]=on})}
+else if(a=='vit'||a=='mvit'){const[i,k,d]=a=='vit'?[cur().id,...v.split(':')]:v.split(':'),q=find(i);return run(async()=>Object.assign(q,await api('PATCH','/players/'+i,{[k]:(+q[k]||0)+ +d})))}
+else if(a=='spend'){const sp=pend;pend={};return run(async()=>Object.assign(cur(),await api('PATCH','/players/'+cur().id,{spend:sp})))}
+else if(a=='zoom'){app.querySelector('.sh').insertAdjacentHTML('beforeend',`<div class="lb" data-act="unzoom"><img src="${esc(cur().gallery[+v])}" alt=""></div>`);return}
+else if(a=='unzoom'){b.remove();return}
+else if(a=='gdel'){if(confirm('Remover esta imagem?')){const g=cur().gallery.filter((_,i)=>i!=+v);return run(async()=>Object.assign(cur(),await api('PATCH','/players/'+cur().id,{gallery:g})))}}
+else if(a=='new'){mtab='list';draft=blank();isNew=true;msg=''}
+else if(a=='edit'){draft=JSON.parse(JSON.stringify(find(v)));isNew=false;msg=''}
+else if(a=='cancel'){draft=null;msg=''}
+else if(a=='del'){if(confirm('Excluir esta ficha? Não dá para desfazer.')){if(draft&&draft.id==v)draft=null;return run(async()=>{await api('DELETE','/players/'+v);await sync()})}}
+else{collect();
+if(a=='add')draft[b.dataset.l].push(b.dataset.l=='powers'?{n:'',c:'',d:''}:{n:'',q:1,d:''});
+else if(a=='rm')draft[b.dataset.l].splice(+v,1);
+else if(a=='noimg')draft.img='';
+else if(a=='egdel')draft.gallery.splice(+v,1);
+else if(a=='save'||a=='prevdraft')return run(async()=>{if(!draft.user||!draft.name.trim()||(isNew&&!draft.pass)){msg='Preencha usuário, senha e nome do personagem.';return}
+if(isNew){draft.id=(await api('POST','/players',draft)).id;isNew=false}else await api('PUT','/players/'+draft.id,draft);
+draft.pass='';await sync();msg='Ficha salva.';if(a=='prevdraft'){prev=draft.id;tab='home'}})}
+render()};
+
+const rd=(f,mx,cb)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,mx/im.height,mx/im.width),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/webp',mx>600?.82:.7))};im.src=r.result};r.readAsDataURL(f)};
+app.onchange=e=>{const id=e.target.id,fs=[...(e.target.files||[])];if(id=='d_file'){if(fs.length){dcollect();rd(fs[0],900,d=>{dd.img=d;render()})}return}
+if(!['f_file','f_gal','g_add'].includes(id)||!fs.length)return;
+const own=id=='g_add'?cur():(collect(),draft);let n=fs.length;
+fs.forEach(f=>rd(f,id=='f_file'?720:480,d=>{if(id=='f_file')own.img=d;else own.gallery.push(d);if(--n==0){if(id=='g_add')run(async()=>Object.assign(own,await api('PATCH','/players/'+own.id,{gallery:own.gallery})));else render()}}))};
+
+const clk=document.getElementById('clk');setInterval(()=>clk.textContent=new Date().toLocaleTimeString('pt-PT'),1000);
+const scr=document.getElementById('screen'),stx=document.getElementById('st');
+function fx(){const p=me&&me.role=='player'?find(me.id):null,g=!!(p&&ev.glitch);let k=0,v=0;
+scr.classList.toggle('glitch',g);stx.textContent=g?'⚠ SINAL INSTÁVEL':'● VAPOR ESTÁVEL';
+if(p){const hm=+p.hpMax||0,T=Math.max(2,Math.ceil(hm*.25));if(hm>0&&p.hp<=T)k=1-p.hp/(T+1);if(+p.peMax>0)v=1-Math.max(0,Math.min(1,p.pe/p.peMax))}
+scr.classList.toggle('hp-low',k>0);scr.style.setProperty('--shk',k.toFixed(2));scr.style.setProperty('--v',v.toFixed(2))}
+const go=()=>{if(draft||(dd&&mtab=='docs'&&!prev)||app.querySelector('.lb'))fx();else{app.classList.add('nr');render()}};
+async function poll(){if(!me||document.hidden||busy)return;busy=true;
+try{const r=await api('GET','/state'),s=core(r);let rr=false,cc=false;
+if(s!=last){last=s;let rl=false;
+r.players.forEach(l=>{const o=find(l.id);if(!o)rl=true;else{if(o.sig!=l.sig)rl=true;Object.assign(o,l)}});
+if(db.players.some(p=>!r.players.some(l=>l.id==p.id)))rl=true;
+ev=r.events;if(rl)await sync();rr=true}
+if(r.chat!=chatId){await loadChat();cc=true}
+if(r.docs!==docSig){docSig=r.docs;await loadDocs();rr=true}
+if(rr||(cc&&!patchChat()))go()}
+catch(e){if(e.st==401){me=null;msg=e.message;render()}}finally{busy=false}}
+(function tick(){poll().finally(()=>setTimeout(tick,inChat()?1500:3000))})();document.addEventListener('visibilitychange',poll);
+api('GET','/me').then(r=>{me=r;return sync()}).catch(()=>{me=null}).finally(render);
+</script>
+</body>
+</html>
